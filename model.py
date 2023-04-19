@@ -36,6 +36,9 @@ def labeling(x):
     '''
     Purpose: Changing the label which indicates the value of the scale. Changing the factors as the label showing.
     Hints: When the function first runs, 3 factors are all 0.
+           Floating point numbers have a finite representation in a computer and are stored in binary, 
+           so there are rounding errors when performing calculations.
+           If using float number to calculate the result is lack of accuracy.0.47-0.46=0.009999999999999953
 
     Parameters
     ----------
@@ -49,22 +52,26 @@ def labeling(x):
     '''
     # Transfer the 3 global variable
     global geofac, popfac, trafac
-    
+    # Get scale value
+    geoget = int(scale1.get())
+    popget = int(scale2.get())
     # Change the label content, rounded to two decimal places
-    # E.g. Geology factor= 20.34%
-    if (round(scale1.get(),2) != geofac): # when geoslider changes
-        scale1_label.config(text='Geology factor = ' + str(round((float(x)*100))) + '%')
-        scale2.config(to=(1-round(scale1.get(),2)), state="normal")
-    if (round(scale2.get(),2) != popfac): # when popslider changes
-        scale2_label.config(text='Population factor = ' + str(round((float(x)*100))) + '%')
-        scale3.config(from_=(1-round(scale1.get(),2)-round(scale2.get(),2)), to=(1-round(scale1.get(),2)-round(scale2.get(),2)), state="normal")
-        scale3_label.config(text='Transport factor = ' + str(round(((1-float(scale1.get())-float(scale2.get()))*100))) + '%')
+    # E.g. Geology factor= 20%
+    if (geoget != (geofac*100)): # when geoslider changes
+        scale1_label.config(text='Geology factor = ' + str(geoget) + '%') # change the label1 text
+        scale2.config(to=(100-geoget), length=(100-geoget)*5, state="normal") # change scale range
+        write_button.config(state='disabled') # close write button
+
+    if (popget != (popfac*100)): # when popslider changes
+        scale2_label.config(text='Population factor = ' + str(popget) + '%') # change the label2 text
+        scale3.config(from_=(100-geoget-popget), to=(100-geoget-popget), length=(100-geoget-popget)*5, state="normal") # change scale range
+        scale3_label.config(text='Transport factor = ' + str(int(100-geoget-popget)) + '%') #autoly change label3 text
+        scale1.config(state='disabled') # close scale1
     
-    # Change the factors' value to the new ones, rounded to two decimal places
-    geofac = round(scale1.get(),2)
-    popfac = round(scale2.get(),2)
-    trafac = (1-round(scale1.get(),2)-round(scale2.get(),2))
-    
+    # Change the factors' value to the new ones, in two decimal places ranging (0, 1)
+    geofac = geoget/100
+    popfac = popget/100
+    trafac = (100-geoget-popget)/100
     
 def exiting():
     """
@@ -72,7 +79,6 @@ def exiting():
     """
     root.quit() # quit root
     root.destroy() # destory root
-    #sys.exit(0)
     
 def update(geofac, popfac, trafac):
     """
@@ -92,17 +98,13 @@ def update(geofac, popfac, trafac):
     """
     
     # Transfer the global variables
-    global figure, sum_raster
+    global figure, sum_raster, write_label
     
     # Calculate the final raster
-    sum_raster = [] # create a new list to store the summed value raster data
-    for i in range(n_rows): # loop for every row
-        sum_row = [] # create a list to store the result data and clear it 
-        for j in range(n_cols): # loop for every column
-            result = geo.multiply(geology[i][j], geofac, population[i][j], popfac, transport[i][j], trafac) # multiply the raster by its factor
-            sum_row.append(result) # append the result to the list sum_row
-        sum_raster.append(sum_row) # append the list sum_row to the list sum_raster
-    sum_raster = geo.rescale(sum_raster) # rescale the multiplied raster to (0, 255)
+    sum_raster = geo.multiply(geology, geofac, population, popfac, transport, trafac)
+    
+    # Rescale the multiplied raster to (0, 255)
+    sum_raster = geo.rescale(sum_raster) 
     
     # Close existing figure
     plt.close(figure)
@@ -129,28 +131,57 @@ def update(geofac, popfac, trafac):
     plt.imshow(transport)
     plt.title('Transport')
     
-    #subplot 4: multiplied raster
+    # subplot 4: multiplied raster
     plt.subplot(1, 4, 4) # the fourth one
     plt.imshow(sum_raster)
     plt.title('Multiplied Raster')
     
-    # show the overall plot at canva1
+    # Show the overall plot at canva1
     canva1.draw()
-    write_button.config(state="normal")
+    
+    # Set widgets' state
+    write_button.config(state="normal") # active write button
+    scale1.config(state='normal') # active scale1
+    scale2.config(state='disabled') # close scale2
+    scale3.config(state='disabled') # close scale3
+    write_label.destroy() # delete write label
     return sum_raster
 
 def output():
     '''
     Output resulting raster data to a txt file
     '''
-    try:
-        io.write_data("OutputData/suitability.txt", sum_raster) # output 
-        label = ttk.Label(frame, text="Data has written to local path successfully!") 
-
-    except FileNotFoundError:
-        label = tk.Label(frame, text="ERROR! Please check the output file path")
+    global write_label
     
-    label.grid(row=6, column=1) # show label at (6, 1)
+    try:
+        # Export txt
+        filename = 'OutputData/suitability(geo' + str(geofac) + '_pop' + str(popfac) + '_tra' + str(trafac) +').txt'
+        io.write_data(filename, sum_raster) # 
+        # Export png
+        imagename = 'OutputData/suitability(geo' + str(geofac) + '_pop' + str(popfac) + '_tra' + str(trafac) +').png'
+        plt.imshow(sum_raster) # plot the resulting raster
+        plt.savefig(imagename) # export the output image
+        # Print success information
+        write_label = ttk.Label(frame, text="Data has written to local path successfully!")
+        
+    except FileNotFoundError:
+        # Print error information
+        write_label = ttk.Label(frame, text="ERROR! Please check the output file path")
+    
+    write_label.grid(row=6, column=1) # show label at (6, 1)
+    
+def reset():
+    # Reset widgets' state and value
+    scale1.config(state='normal')
+    scale2.config(state='normal')
+    scale3.config(state='normal')
+    scale1.set(0)
+    scale2.set(0)
+    scale1.config(state='normal')
+    scale2.config(state='disabled')
+    scale3.config(state='disabled')
+    
+    
 #%% Main body
 if __name__ == '__main__':
     
@@ -208,44 +239,49 @@ if __name__ == '__main__':
     # Create geology slider
     # Create a label to describe the variable
     scale1_name = ttk.Label(frame, text="Geology:") # text
-    scale1_name.grid(row=0, column=0) # position at (0, 0)
+    scale1_name.grid(row=0, column=0,sticky='e') # position at (0, 0)
     # Create a scale
-    scale1 = ttk.Scale(frame, from_=0, to=1, command=labeling, length=500) # the scale ranges from 0 to 1; when changing the scale, call function 'label'
-    scale1.grid(row=0,column=1) # position at (0, 1)
+    scale1 = ttk.Scale(frame, from_=0, to=100, command=labeling, length=500) # the scale ranges from 0 to 1; when changing the scale, call function 'label'
+    scale1.grid(row=0,column=1,sticky='w') # position at (0, 1)
     # Create a Label widget to display scale value 
     scale1_label = ttk.Label(frame, text='Move the scale slider to change the factor.') #text
-    scale1_label.grid(row=0,column=2) # position at (0, 2)
+    scale1_label.grid(row=0,column=2,sticky='w') # position at (0, 2)
     
     # Create population slider
     # Similar to geology slider
     scale2_name = ttk.Label(frame, text="Population:")
-    scale2_name.grid(row=1,column=0)
-    scale2 = ttk.Scale(frame, from_=0, to=1, command=labeling, length=500, state="disabled")
-    scale2.grid(row=1,column=1)
-    scale2_label = ttk.Label(frame, text='Move the scale slider to change the factor.')
-    scale2_label.grid(row=1,column=2)
+    scale2_name.grid(row=1,column=0,sticky='e')
+    scale2 = ttk.Scale(frame, from_=0, to=100, command=labeling, length=500, state="disabled")
+    scale2.grid(row=1,column=1,sticky='w')
+    scale2_label = ttk.Label(frame)
+    scale2_label.grid(row=1,column=2,sticky='w')
     
     # Create transport slider
     # Similar to geology slider
     scale3_name = ttk.Label(frame, text="Transport:")
-    scale3_name.grid(row=2,column=0)
-    scale3 = ttk.Scale(frame, from_=0, to=1, command=labeling, length=500, state="disabled")
-    scale3.grid(row=2,column=1)
-    scale3_label = ttk.Label(frame, text='Move the scale slider to change the factor.')
-    scale3_label.grid(row=2,column=2)
+    scale3_name.grid(row=2,column=0,sticky='e')
+    scale3 = ttk.Scale(frame, from_=0, to=100, command=labeling, length=500, state="disabled")
+    scale3.grid(row=2,column=1,sticky='w')
+    scale3_label = ttk.Label(frame)
+    scale3_label.grid(row=2,column=2,sticky='w')
      
     # Create a button to generate the multiplied raster (resulting raster)
     #'command=lambda: update' :lambda be used to transfer CURRENT variable's value, otherwise the initial values are transfered to function 'update'
-    gen_button = ttk.Button(frame, text="Generate suitability raster", command=lambda: update(scale1.get(), scale2.get(), scale3.get())) 
+    gen_button = ttk.Button(frame, text="Generate suitability raster", width=35, command=lambda: update(scale1.get(), scale2.get(), scale3.get())) 
     gen_button.grid(row=5, column=0) # position at (5, 1)
     
-    write_button = ttk.Button(frame, text = "Write suitability data", command=lambda: output())
+    write_button = ttk.Button(frame, text = "Write suitability data", width=35, command=lambda: output())
     write_button.config(state="disabled")
     write_button.grid(row=5, column=1)
+    write_label = ttk.Label(frame) 
     
     # Create a Button widget and link this with the exiting function
-    exit_button = ttk.Button(frame, text="Exit", command=exiting)
+    exit_button = ttk.Button(frame, text="Exit", width=35, command=exiting)
     exit_button.grid(row=5,column=2)
+    
+    # Create a button to reset 
+    reset_button = ttk.Button(frame, text="Reset factors", padding=(0,15), command=lambda: reset())
+    reset_button.grid(row=0, column=3, rowspan=3)
     
     # Exit if the window is closed.
     root.protocol('WM_DELETE_WINDOW', exiting)
