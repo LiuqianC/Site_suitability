@@ -228,7 +228,7 @@ if __name__ == '__main__':
     # Create the tkinter window
     root = tk.Tk()
     root.wm_title("Site Suitability") # the window's title
-    root.attributes("-topmost", True)
+    root.attributes("-topmost", True) # keep window at top
     
     # Create a canvas to display the figure
     canva1 = matplotlib.backends.backend_tkagg.FigureCanvasTkAgg(figure, master=root) # initialisation
