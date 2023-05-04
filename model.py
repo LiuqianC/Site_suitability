@@ -138,10 +138,11 @@ def update(geofac, popfac, trafac):
     
     # Show the overall plot at canva1
     canva1.draw()
+    plt.close()
     
     # Set widgets' state
     write_button.config(state="normal") # active write button
-    scale1.config(state='normal') # active scale1
+    scale1.config(state='disabled') # active scale1
     scale2.config(state='disabled') # close scale2
     scale3.config(state='disabled') # close scale3
     write_label.destroy() # delete write label
@@ -159,8 +160,11 @@ def output():
         io.write_data(filename, sum_raster) # 
         # Export png
         imagename = 'OutputData/suitability(geo' + str(geofac) + '_pop' + str(popfac) + '_tra' + str(trafac) +').png'
+        plt.close()
         plt.imshow(sum_raster) # plot the resulting raster
+        plt.title("Site Suitability [geo" + str(geofac) + ", pop" + str(popfac) + ", tra" + str(trafac) + "]")
         plt.savefig(imagename) # export the output image
+        plt.close()
         # Print success information
         write_label = ttk.Label(frame, text="Data has written to local path successfully!")
         
@@ -205,14 +209,6 @@ if __name__ == '__main__':
     # Initialise figure
     figure = plt.figure(figsize=(24, 10))
     
-    # Create the tkinter window
-    root = tk.Tk()
-    root.wm_title("Site Suitability") # the window's title
-    
-    # Create a canvas to display the figure
-    canva1 = matplotlib.backends.backend_tkagg.FigureCanvasTkAgg(figure, master=root) # initialisation
-    canva1._tkcanvas.pack(side=tk.TOP, fill=tk.BOTH, expand=1) # canva1's position
-    
     # Show source data 
     # subplot 1: geology
     plt.subplot(1, 4, 1) # the overall plot has 1 row and 4 columns and Geology is the first subplot
@@ -229,8 +225,19 @@ if __name__ == '__main__':
     plt.imshow(transport)
     plt.title('Transport')
     
+    # Create the tkinter window
+    root = tk.Tk()
+    root.wm_title("Site Suitability") # the window's title
+    root.attributes("-topmost", True)
+    
+    # Create a canvas to display the figure
+    canva1 = matplotlib.backends.backend_tkagg.FigureCanvasTkAgg(figure, master=root) # initialisation
+    canva1._tkcanvas.pack(side=tk.TOP, fill=tk.BOTH, expand=1) # canva1's position
+    
     # Show the plot at canva1
-    canva1.draw()    
+    canva1.draw()
+    # Close the redundant window
+    plt.close() 
     
     #Create a container to place sliders and labels
     frame = ttk.Frame(root) # in the root
