@@ -28,7 +28,7 @@ def multiply(data1, factor1, data2, factor2, data3, factor3):
         for j in range(n_cols):
             # Multiply each raster by a factor and add the weighted rasters together
             result = data1[i][j] *factor1 + data2[i][j] * factor2 + data3[i][j] * factor3
-            result = round(result,2) # round the result to the nearest decimal point
+            result = round(result) # round the result to integer
             sum_row.append(result) # append the result to the list sum_row
         sum_raster.append(sum_row) # append the list sum_row to the list sum_raster
         

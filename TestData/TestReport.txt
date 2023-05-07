@@ -1,6 +1,0 @@
-......
-----------------------------------------------------------------------
-Ran 6 tests in 0.097s
-
-OK
-<unittest.runner.TextTestResult run=6 errors=0 failures=0>
