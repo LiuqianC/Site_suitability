@@ -30,6 +30,8 @@ matplotlib.use('TkAgg')
 from matplotlib import pyplot as plt
 import tkinter as tk
 import tkinter.ttk as ttk
+import unittest
+import TestData.test as tt
 
 #%% Functions
 def labeling(x):
@@ -232,7 +234,7 @@ if __name__ == '__main__':
     
     # Create a canvas to display the figure
     canva1 = matplotlib.backends.backend_tkagg.FigureCanvasTkAgg(figure, master=root) # initialisation
-    canva1._tkcanvas.pack(side=tk.TOP, fill=tk.BOTH, expand=1) # canva1's position
+    canva1._tkcanvas.pack(side=tk.TOP, fill=tk.BOTH, expand=1) # canva1's position   
     
     # Show the plot at canva1
     canva1.draw()
@@ -295,6 +297,20 @@ if __name__ == '__main__':
 
     # Start the GUI
     root.mainloop()
+    
+    # generate test report
+    suite = unittest.TestSuite()
+    suite.addTest(tt.TestIO("test_read_data"))
+    suite.addTest(tt.TestIO("test_write_data"))
+    suite.addTest(tt.TestGeometry("test_mul"))
+    suite.addTest(tt.TestGeometry("test_get_rows_cols"))
+    suite.addTest(tt.TestGeometry("test_get_max_min"))
+    suite.addTest(tt.TestGeometry("test_rescale"))
+    with open("TestData/TestReport.txt","w")as f:
+        runner = unittest.TextTestRunner(stream=f)
+        result = runner.run(suite)   
+        # write test report
+        f.write(str(result))
 
     
         
