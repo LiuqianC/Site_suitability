@@ -108,42 +108,18 @@ def update(geofac, popfac, trafac):
     # Rescale the multiplied raster to (0, 255)
     sum_raster = geo.rescale(sum_raster) 
     
-    # Close existing figure
-    plt.close(figure)
-
-    # Create a new figure
-    figure = plt.figure(figsize=(12, 5), dpi=100)
-    
-    # Change the canva1's figure to the new one
-    canva1.figure = figure
-    
-    # Combine 4 plots into one plot
-    # subplot 1: geology
-    plt.subplot(1, 4, 1) # the overall plot has 1 row and 4 columns and this is the first one
-    plt.imshow(geology) # show list geology as image
-    plt.title('Geology') # the subplot's title
-    
-    # subplot 2: population
-    plt.subplot(1, 4, 2) # this is the second one
-    plt.imshow(population)
-    plt.title('Population')
-    
-    # subplot 3: transport
-    plt.subplot(1, 4, 3) # the third one
-    plt.imshow(transport)
-    plt.title('Transport')
-    
     # subplot 4: multiplied raster
     plt.subplot(1, 4, 4)# the fourth one
+    plt.cla()
     plt.imshow(sum_raster)
     plt.title('Multiplied Raster')
     
-    
+    # Set the interval between individual subplots
     plt.subplots_adjust(wspace=0.3, hspace=0)
     
     # Show the overall plot at canva1
     canva1.draw()
-    plt.close()
+    # plt.close()
     
     # Set widgets' state
     write_button.config(state="normal") # active write button
@@ -180,15 +156,34 @@ def output():
     write_label.grid(row=6, column=1) # show label at (6, 1)
     
 def reset():
+    # Transfer the 3 global variable
+    global geofac, popfac, trafac
+    
+    # Change the factors' value to 0
+    geofac = 0
+    popfac = 0
+    trafac = 0
+    
     # Reset widgets' state and value
     scale1.config(state='normal')
-    scale2.config(state='normal')
-    scale3.config(state='normal')
     scale1.set(0)
+    scale1_label.config(text='Transport factor = ' + str(0) + '%')
+    
+    scale2.config(state='normal')
     scale2.set(0)
+    scale2.config(length=0)
+    scale2_label.config(text='Transport factor = ' + str(0) + '%')
+    
+    scale3.config(state='normal')
+    scale3.config(from_=0, to=0, length=0)
+    scale3.set(0)
+    scale3_label.config(text='Transport factor = ' + str(0) + '%')
+
     scale1.config(state='normal')
     scale2.config(state='disabled')
     scale3.config(state='disabled')
+    
+
     
     
 #%% Main body
@@ -246,7 +241,7 @@ if __name__ == '__main__':
     # Show the plot at canva1
     canva1.draw()
     # Close the redundant window
-    plt.close() 
+    # plt.close() 
     
     #Create a container to place sliders and labels
     frame = ttk.Frame(root) # in the root
