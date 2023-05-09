@@ -54,8 +54,6 @@ The project provides a software that automatically calculates site suitability. 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 ### Built With
 
 The following are the main libraries used for the project.
@@ -64,6 +62,37 @@ The following are the main libraries used for the project.
 * [![Tkinter][Tkinter-logo]][Tkinter-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+### Folder structure
+- InputData
+	- geology.txt: The factor raster data of geology
+	- population.txt: The factor raster data of population
+	- transport.txt: The factor raster data of transport
+- OutputData: Two example resulting images and example raster txt format data
+- Readme: Prepared images for readme
+- TestData
+	- TestReport.txt: The running result shown in the console
+	- test.py: The test code containing 6 unittest cases
+		- `class TestIO`
+			- `test_read_data`: A test case for the function which reads data from local
+			- `test_write_data`: A test case for the function which writes data to local
+		- `class TestGeometry`
+			- `test_mul`: A test case for the function which multiplies the factor data by their weights respectively and adds them up
+			- `test_get_rows_cols`: A test case for the function which gets the rows number and columns number of the input rasters
+			- `test_get_max_min`: A test case for the function which gets the maximum value and the minimum value of a raster data list
+			- `test_rescale`: A test case for the function which rescales a raster list to (0, 255)
+- modules:
+	- geometry.py: The functions used in calculations
+		- `def multiply(data1, factor1, data2, factor2, data3, factor3)`: Multiplies all raster data by their factor weights and adds them up
+		- `def get_rows_cols(data)`: Gets the rows number and columns number of the raster data by searching row by row and column by column
+		- `def get_max_min(data)`: Gets the maximum value and the minimum value of the raster data by searching row by row and column by column
+		- `def rescale(data)`: Rescales the raster data to (0, 255)
+	- io.py: The functions used to read data and write data
+		- `def read_data(filename)`: Reads the txt file into the environment according to the filename
+		- `def write_data(filename,data)`: Writes the raster data in the environment to local according to the filename
+- Lisence: the MIT lisence
+- Readme.md: The readme content in Markdown language
+- **model.py: The main running code**
 
 <!-- GETTING STARTED -->
 ## Getting Started
