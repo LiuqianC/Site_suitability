@@ -110,9 +110,9 @@ def update(geofac, popfac, trafac):
     
     # Close existing figure
     plt.close(figure)
-    
+
     # Create a new figure
-    figure = plt.figure(figsize=(24, 10))
+    figure = plt.figure(figsize=(12, 5), dpi=100)
     
     # Change the canva1's figure to the new one
     canva1.figure = figure
@@ -134,9 +134,12 @@ def update(geofac, popfac, trafac):
     plt.title('Transport')
     
     # subplot 4: multiplied raster
-    plt.subplot(1, 4, 4) # the fourth one
+    plt.subplot(1, 4, 4)# the fourth one
     plt.imshow(sum_raster)
     plt.title('Multiplied Raster')
+    
+    
+    plt.subplots_adjust(wspace=0.3, hspace=0)
     
     # Show the overall plot at canva1
     canva1.draw()
@@ -209,7 +212,7 @@ if __name__ == '__main__':
     
     # GUI
     # Initialise figure
-    figure = plt.figure(figsize=(24, 10))
+    figure = plt.figure(figsize=(12, 5), dpi=100)
     
     # Show source data 
     # subplot 1: geology
@@ -226,15 +229,19 @@ if __name__ == '__main__':
     plt.subplot(1, 4, 3) # the third is Transport
     plt.imshow(transport)
     plt.title('Transport')
+
+    plt.subplots_adjust(wspace=0.3, hspace=0)
     
     # Create the tkinter window
     root = tk.Tk()
     root.wm_title("Site Suitability") # the window's title
+    root.geometry("1500x1000")
     root.attributes("-topmost", True) # keep window at top
     
     # Create a canvas to display the figure
     canva1 = matplotlib.backends.backend_tkagg.FigureCanvasTkAgg(figure, master=root) # initialisation
-    canva1._tkcanvas.pack(side=tk.TOP, fill=tk.BOTH, expand=1) # canva1's position   
+    canva1._tkcanvas.pack(side=tk.TOP, fill=tk.NONE, expand=1) # canva1's position   
+    canva1._tkcanvas.config(width=1200, height=500)
     
     # Show the plot at canva1
     canva1.draw()
