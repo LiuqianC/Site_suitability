@@ -177,6 +177,8 @@ When the weights are determined, the final result raster is calculated once the 
 4. Write the result data
 The user can click the 'Write' button to download the result data to local. Once the  output is successful, there is a line showing the success.
 <img src="Readme/WriteData.png">
+The output image is saved with a title showing the factors weights
+<img src="Readme/SavaImage.png">
 
 5. Reset the weight
 If the weight of factors should be edited, the user should click the 'Reset' button. Once the button is clicked, the silders comes back to the initial states. The user can move the first slider again. At this time, the 'Write' button is disabled to prevent an incorrect output raster. After generating the new result raster, the 'Write' button return to normal.
