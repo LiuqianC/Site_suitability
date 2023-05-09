@@ -13,13 +13,13 @@ import os
 class TestIO(unittest.TestCase):
     def test_read_data(self):
         # Test if read_data function returns list
-        geology = io.read_data('InputData/geology.txt')
+        geology = io.read_data('../InputData/geology.txt')
         self.assertIsInstance(geology, list) 
         
-        population = io.read_data('InputData/population.txt')
+        population = io.read_data('../InputData/population.txt')
         self.assertIsInstance(population, list)
         
-        transport = io.read_data('InputData/transport.txt')
+        transport = io.read_data('../InputData/transport.txt')
         self.assertIsInstance(transport, list)
         
     def test_write_data(self):
@@ -28,7 +28,7 @@ class TestIO(unittest.TestCase):
         data = [[1, 2, 3], [4, 5, 6]]
         
         # Define output file path
-        file_path = 'OutputData/test_output.txt'
+        file_path = '../OutputData/test_output.txt'
         
         # Write data to file
         io.write_data(file_path, data)
