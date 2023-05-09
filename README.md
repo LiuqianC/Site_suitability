@@ -173,7 +173,7 @@ Now the second slider, the third slider and write data button are disabled.
 <img src="Readme/Interface.png">
 
 2. Change the weight of factors:
-First, users need to decide the geology factor's weight. When users start to move the population slider, the geology slider will be locked. The transport slider will move automatically as the change population to keep the sum of three weights equal to 1.
+First, users need to decide the geology factor's weight. When users start to move the population slider, the geology slider will be locked. The transport slider will automatically move as the population changes to keep the sum of the three weights equal to 1.
 <img src="Readme/SliderMove.png">
 
 3. Generate the site suitability image:
