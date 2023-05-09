@@ -121,10 +121,10 @@ Clone the repo
 Run ``` model.py ```
 - Open  ```model.py``` in any Python compiler and Run.
 - Run it in CMD window:
-	   ```
+```
 	   cd 'THE GIT REPOSITORIES PATH'
 	   python model.py
-	   ```
+```
    
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
