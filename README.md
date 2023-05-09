@@ -115,6 +115,10 @@ Clone the repo
 	   ```
 	   git clone https://github.com/LiuqianC/Site_suitability.git
 	   ```
+	   
+OR
+
+Download the repo zip
 
 ### Run
 
