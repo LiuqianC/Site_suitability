@@ -250,7 +250,7 @@ if __name__ == '__main__':
     scale1_name = ttk.Label(frame, text="Geology:") # text
     scale1_name.grid(row=0, column=0,sticky='e') # position at (0, 0)
     # Create a scale
-    scale1 = ttk.Scale(frame, from_=0, to=100, command=labeling, length=500) # the scale ranges from 0 to 1; when changing the scale, call function 'label'
+    scale1 = ttk.Scale(frame, from_=0, to=100, command=labeling, length=500) # the scale ranges from 0 to 100; when changing the scale, call function 'label'
     scale1.grid(row=0,column=1,sticky='w') # position at (0, 1)
     # Create a Label widget to display scale value 
     scale1_label = ttk.Label(frame, text='Move the scale slider to change the factor.') #text
