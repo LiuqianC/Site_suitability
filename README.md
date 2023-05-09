@@ -21,6 +21,7 @@
       <a href="#about-the-project">About The Project</a>
       <ul>
         <li><a href="#built-with">Built With</a></li>
+	<li><a href="#Folder-structure">Folder structure</a></li>
       </ul>
     </li>
     <li>
@@ -29,6 +30,7 @@
         <li><a href="#prerequisites">Prerequisites</a></li>
         <li><a href="#installation">Installation</a></li>
         <li><a href="#run">Run</a></li>
+	<li><a href="#Attention">Attention</a></li>
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
@@ -50,7 +52,7 @@
 ## About The Project
 This is the Site Suitability project for assignment 2.
 
-The project provides a software that automatically calculates site suitability. The three most important factors in the siting of companies for rock aggregates are geology, transport and population. The importance of these three factors may vary from one situation to another, so the weights of the three factors need to be constantly adjusted. Each of the three factors is multiplied by its own weight and added together to derive the site suitability. Using this software, the user can easily select the factor weights using the sliders and visualise the final calculated suitability.
+The project provides a software that automatically calculates site suitability. The three most important factors in the siting of companies for rock aggregates are geology, transport and population. The importance of these three factors may vary from one situation to another, so the weights of the three factors need to be constantly adjusted. Each of the three factors is multiplied by its weight and added together to derive the site suitability. Using this software, the user can easily select the factor weights using the sliders and visualise the final calculated suitability.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -103,7 +105,7 @@ The purpose of this project is to visualise the site suitability.
 
 The software is built based on Python environment. 
  
-Before you can use this software, you need to install the following python library in CMD window:
+Before you can use this software, you need to install the following Python library in CMD window:
 * matplotlib
 	  ```
 	  pip install matplotlib
@@ -133,16 +135,20 @@ Run ``` model.py ```
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- USAGE EXAMPLES -->
+
+### Attention
+**Due to the different screen resolution, the software interface varies on different computers. If you encounter any problems with the display of the software, please adjust the width and length of the window. In common exceptions, users need to stretch the window length to show the full control slider**
+
 ## Usage
 
 ### Interface
 
 The interface contains 3 types of control components:
 * Canvas
-All the images will shown on the canvas. It contains 3 factors images initially, and will add a suitability image when generating the site suitablity.
+All the images will be shown on the canvas. It contains 3 factors images initially and will add a suitability image when generating the site suitability.
 
 * Sliders
-The slider controls the weight of the factor in the final suitability result. There are 3 sliders in the interface, which control the weight of factor respectively. 
+The slider controls the weight of the factor in the final suitability result. There are 3 sliders in the interface, which control the weight of factors respectively. 
 
 * Buttons
 The buttons enable reset factor weights, image generation, write data and exit functions.
@@ -153,13 +159,13 @@ The buttons enable reset factor weights, image generation, write data and exit f
 Initially, the user can only move the first slider and the other sliders are disabled. Once the first slider has moved, the state of the second slider becomes normal and can be moved and the length of the second slider will change corresponding to the first weight. The third slider will move automatically when moving the second one.
 
 2. Generate the site suitability
-Once the weights of 3 factors are decided, the user can press the 'Generate suitability raster' button to calculate the site suitability. The final calculated result raster will appear on the canvas near 3 factor images.
+Once the weights of the 3 factors are decided, the user can press the 'Generate suitability raster' button to calculate the site suitability. The final calculated result raster will appear on the canvas near 3 factor images.
 
 3. Write data
-The 'Write suitability data' button is disabled initially. It will be normalOnce the result raster has been calculated, the 'Write suitability data' button will become normal and can be used. When the user click the button, the calculated site suitability will be downloaded to your local PC in txt format. Once the user click the output button, a sentence will appear behind the button indicating the output is successful or not.
+The 'Write suitability data' button is disabled initially. It will be available once the result raster has been calculated, the 'Write suitability data' button will become normal and can be used. When users click the button, the calculated site suitability will be downloaded to your local PC in txt format. Once users click the write-data button, a sentence will appear behind the button indicating whether the output is successful or not.
 
 4. Reset factors weight
-If the weight are not perfect, the user can press ‘Reset factors’ button to reset.  
+If the weights are not perfect, the user can press ‘Reset factors’ button to reset them.  
 
 ###  A usage example
 1. Open the initial interface:
@@ -167,7 +173,7 @@ Now the second slider, the third slider and write data button are disabled.
 <img src="Readme/Interface.png">
 
 2. Change the weight of factors:
-First, the user need to decide the geology factor's weight. When the user start to move the population slider, the geology slider will be locked. The transport slider will move automatically as the change of population to keep the sum of three weights equal to 1.
+First, users need to decide the geology factor's weight. When users start to move the population slider, the geology slider will be locked. The transport slider will move automatically as the change population to keep the sum of three weights equal to 1.
 <img src="Readme/SliderMove.png">
 
 3. Generate the site suitability image:
@@ -175,13 +181,13 @@ When the weights are determined, the final result raster is calculated once the 
 <img src="Readme/Result.png">
 
 4. Write the result data
-The user can click the 'Write' button to download the result data to local. Once the  output is successful, there is a line showing the success.
+The user can click the 'Write' button to download the result data to local. Once the output is successful, there is a line showing the success.
 <img src="Readme/WriteData.png">
 The output image is saved with a title showing the factors weights
 <img src="Readme/SaveImage.png">
 
 5. Reset the weight
-If the weight of factors should be edited, the user should click the 'Reset' button. Once the button is clicked, the silders comes back to the initial states. The user can move the first slider again. At this time, the 'Write' button is disabled to prevent an incorrect output raster. After generating the new result raster, the 'Write' button return to normal.
+If the weight of factors should be edited, the user should click the 'Reset' button. Once the button is clicked, the sliders come back to the initial states. The user can move the first slider again. At this time, the 'Write' button is disabled to prevent an incorrect output raster. After generating the new result raster, the 'Write' button returns to available.
 <img src="Readme/Reset.png">
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -189,7 +195,7 @@ If the weight of factors should be edited, the user should click the 'Reset' but
 <!-- code details -->
 ## Code details
 ### Data introduction
-The three factor raster data are all two dimensional raster data for each factor with values in the range [0, 255]. The higher the value of a factor, the more suitable the location is for the factory.
+The three factor raster data are all two-dimensional raster data for each factor with values in the range [0, 255]. The higher the value of a factor, the more suitable the location is for the factory.
 - [x] Geology
 - [x] Population
 - [x] Transport
@@ -203,7 +209,7 @@ Each factor is to be multiplied by a weight and the weighted factors are to be a
 2. Read three factor rasters
 3. Create GUI
 	- Create tkinter window
-	- Create control conponents
+	- Create control components
 4. Plot 3 factor images in GUI
 5. Start the GUI
 
