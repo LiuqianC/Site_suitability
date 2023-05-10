@@ -116,7 +116,6 @@ def update(geofac, popfac, trafac):
     plt.subplot(1, 4, 4)# the fourth one
     plt.cla()
     plt.imshow(sum_raster)
-    plt.show()
     plt.title('Multiplied Raster')
     
     # Set the interval between individual subplots
