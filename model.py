@@ -187,6 +187,8 @@ def reset():
     scale1.config(state='normal')
     scale2.config(state='disabled')
     scale3.config(state='disabled')
+    write_button.config(state='disabled')
+    
     
 
     
