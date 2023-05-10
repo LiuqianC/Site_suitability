@@ -112,11 +112,23 @@ def rescale(data):
     maxdata, mindata = get_max_min(data)
     # Create a list to store the new scaled data
     rescaled_data = []
-    # Loop
-    for i in range(n_rows):
-        rescaled_row = [] # initialise a list to store datas in a row or clear it
-        for j in range(n_cols):
-            result = round(((data[i][j] - mindata) / (maxdata - mindata)) * 255) # rescale
-            rescaled_row.append(result) # append result to the list of row
-        rescaled_data.append(rescaled_row) # append the row to the final list
+    
+    # Only rescale the raster when it really has values
+    if (maxdata != mindata):
+        # Loop
+        for i in range(n_rows):
+            rescaled_row = [] # initialise a list to store datas in a row or clear it
+            for j in range(n_cols):
+                result = round(((data[i][j] - mindata) / (maxdata - mindata)) * 255) # rescale
+                rescaled_row.append(result) # append result to the list of row
+            rescaled_data.append(rescaled_row) # append the row to the final list
+    else : # When all values are 0
+        # Loop
+        for i in range(n_rows):
+            rescaled_row = [] # initialise a list to store datas in a row or clear it
+            for j in range(n_cols):
+                result = maxdata # rescale
+                rescaled_row.append(result) # append result to the list of row
+            rescaled_data.append(rescaled_row) # append the row to the final list
+            
     return rescaled_data
