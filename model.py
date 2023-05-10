@@ -62,7 +62,10 @@ def labeling(x):
     if (geoget != (geofac*100)): # when geoslider changes
         scale1_label.config(text='Geology factor = ' + str(geoget) + '%') # change the label1 text
         scale2.config(to=(100-geoget), length=(100-geoget)*5, state="normal") # change scale range
+        scale3.config(to=(100-geoget), length=(100-geoget)*5, state="normal") # change scale range
         write_button.config(state='disabled') # close write button
+        # if (geoget == 100):
+        #     scale3_label.config()
 
     if (popget != (popfac*100)): # when popslider changes
         scale2_label.config(text='Population factor = ' + str(popget) + '%') # change the label2 text
@@ -70,6 +73,7 @@ def labeling(x):
         scale3_label.config(text='Transport factor = ' + str(int(100-geoget-popget)) + '%') #autoly change label3 text
         scale1.config(state='disabled') # close scale1
     
+    scale3.config(state="disabled")
     # Change the factors' value to the new ones, in two decimal places ranging (0, 1)
     geofac = geoget/100
     popfac = popget/100
@@ -112,6 +116,7 @@ def update(geofac, popfac, trafac):
     plt.subplot(1, 4, 4)# the fourth one
     plt.cla()
     plt.imshow(sum_raster)
+    plt.show()
     plt.title('Multiplied Raster')
     
     # Set the interval between individual subplots
@@ -162,22 +167,23 @@ def reset():
     # Change the factors' value to 0
     geofac = 0
     popfac = 0
-    trafac = 0
+    trafac = 1
     
     # Reset widgets' state and value
-    scale1.config(state='normal')
+    scale1.config(from_=0, to=100, state='normal')
     scale1.set(0)
     scale1_label.config(text='Transport factor = ' + str(0) + '%')
     
-    scale2.config(state='normal')
+    scale2.config(from_=0, to=100, state='normal')
+    scale2.config(length=500)
     scale2.set(0)
-    scale2.config(length=0)
-    scale2_label.config(text='Transport factor = ' + str(0) + '%')
+
+    scale2_label.config(text='')
     
-    scale3.config(state='normal')
-    scale3.config(from_=0, to=0, length=0)
-    scale3.set(0)
-    scale3_label.config(text='Transport factor = ' + str(0) + '%')
+    scale3.config(from_=0, to=100, state='normal')
+    scale3.config(length=500)
+    scale3.set(100)
+    scale3_label.config(text='')
 
     scale1.config(state='normal')
     scale2.config(state='disabled')
@@ -278,7 +284,7 @@ if __name__ == '__main__':
      
     # Create a button to generate the multiplied raster (resulting raster)
     #'command=lambda: update' :lambda be used to transfer CURRENT variable's value, otherwise the initial values are transfered to function 'update'
-    gen_button = ttk.Button(frame, text="Generate suitability raster", width=35, command=lambda: update(scale1.get(), scale2.get(), scale3.get())) 
+    gen_button = ttk.Button(frame, text="Generate suitability raster", width=35, command=lambda: update(geofac, popfac, trafac)) 
     gen_button.grid(row=5, column=0) # position at (5, 1)
     
     write_button = ttk.Button(frame, text = "Write suitability data", width=35, command=lambda: output())
